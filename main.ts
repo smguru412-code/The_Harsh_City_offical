@@ -6,6 +6,7 @@ namespace SpriteKind {
     export const button = SpriteKind.create()
     export const npc2 = SpriteKind.create()
     export const Map = SpriteKind.create()
+    export const m = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     scene.setBackgroundColor(11)
@@ -55,9 +56,17 @@ browserEvents.H.onEvent(browserEvents.KeyEvent.Pressed, function () {
     Bandit_bar.value += 200
 })
 browserEvents.M.onEvent(browserEvents.KeyEvent.Pressed, function () {
-    myMinimap = minimap.minimap(MinimapScale.Quarter, 2, 0)
+    myMinimap = minimap.minimap(MinimapScale.Eighth, 2, 0)
     Veiwable_map = sprites.create(minimap.getImage(myMinimap), SpriteKind.Map)
     Veiwable_map.setPosition(scene.cameraProperty(CameraProperty.X), scene.cameraProperty(CameraProperty.Y))
+    for (let value of sprites.allOfKind(SpriteKind.Player)) {
+        minimap.includeSprite(myMinimap, value, MinimapSpriteScale.Double)
+    }
+    minimap.includeSprite(myMinimap, STARTER_CHEST, MinimapSpriteScale.MinimapScale)
+    minimap.includeSprite(myMinimap, weapon_dealer, MinimapSpriteScale.Double)
+})
+browserEvents.M.onEvent(browserEvents.KeyEvent.Released, function () {
+    sprites.destroy(Veiwable_map)
 })
 function run (mySprite: Sprite) {
     if (dash == false) {
@@ -1790,6 +1799,12 @@ statusbar2.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
 statusbar2.setBarBorder(1, 15)
 statusbar2.setColor(7, 11, 2)
 statusbar2.setPosition(140, 110)
+game.onUpdate(function () {
+	
+})
+game.onUpdate(function () {
+	
+})
 game.onUpdate(function () {
     if (talking == true) {
         controller.moveSprite(mySprite2, 0, 0)
