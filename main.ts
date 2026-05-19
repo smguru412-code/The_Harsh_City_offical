@@ -29,12 +29,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.npc, function (sprite, otherSpri
             coins += -10
             coin_replace()
             sprites.destroy(weapon_dealer)
-            scene.setBackgroundColor(11)
             tiles.setCurrentTilemap(tilemap`level3`)
             controller.moveSprite(mySprite2, 100, 100)
             talking = false
             game.showLongText("There are some bandits here click to punch and defeat them.", DialogLayout.Bottom)
             Bandits()
+            city = true
         } else {
         	
         }
@@ -62,7 +62,7 @@ browserEvents.M.onEvent(browserEvents.KeyEvent.Pressed, function () {
     for (let value of sprites.allOfKind(SpriteKind.Player)) {
         minimap.includeSprite(myMinimap, value, MinimapSpriteScale.Double)
     }
-    minimap.includeSprite(myMinimap, STARTER_CHEST, MinimapSpriteScale.MinimapScale)
+    minimap.includeSprite(myMinimap, STARTER_CHEST, MinimapSpriteScale.Double)
     minimap.includeSprite(myMinimap, weapon_dealer, MinimapSpriteScale.Double)
 })
 browserEvents.M.onEvent(browserEvents.KeyEvent.Released, function () {
@@ -1702,6 +1702,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
         pause(5000)
     }
 })
+let water_bottle: Sprite = null
 let projectile: Sprite = null
 let down = 0
 let right = 0
@@ -1715,6 +1716,7 @@ let Veiwable_map: Sprite = null
 let myMinimap: minimap.Minimap = null
 let Bandit_bar: StatusBarSprite = null
 let up = 0
+let city = false
 let coins = 0
 let talking = false
 let statusbar: StatusBarSprite = null
@@ -1815,4 +1817,27 @@ game.onUpdate(function () {
 })
 game.onUpdateInterval(500, function () {
     statusbar.value += 1
+})
+game.onUpdateInterval(100, function () {
+    if (city == true) {
+        water_bottle = sprites.create(img`
+            . . . . . . . f f . . . . . . . 
+            . . . . . f f f f f f . . . . . 
+            . . 8 8 8 8 8 8 8 8 8 8 8 8 . . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . 8 8 8 8 8 8 8 8 8 8 8 8 8 8 . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . 8 8 8 8 8 8 8 8 8 8 8 8 8 8 . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . 8 9 9 9 9 9 9 9 9 9 9 9 9 8 . 
+            . . 8 8 8 8 8 8 8 8 8 8 8 8 . . 
+            `, SpriteKind.Food)
+        tiles.placeOnRandomTile(water_bottle, assets.tile`myTile0`)
+    }
 })
